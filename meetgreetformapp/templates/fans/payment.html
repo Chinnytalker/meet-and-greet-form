@@ -1,0 +1,250 @@
+{% load static %}
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Payment Details</title>-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="container mt-5">-->
+<!--        <h1 class="mb-4">Payment Details</h1>-->
+<!--        <p>Please make the payment using the following details:</p>-->
+<!--        <p><strong>{{ payment_info.method }}:</strong> <span id="payment-details">{{ payment_info.details }}</span></p>-->
+<!--        <button class="btn btn-secondary" onclick="copyToClipboard()">Copy {{ payment_info.method }} Details</button>-->
+<!--        <p>If payment is successful, proceed to submit the form for booking.</p>-->
+<!--        <a href="{% url 'success' %}" class="btn btn-primary">Proceed to Success Page</a>-->
+<!--    </div>-->
+
+<!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>-->
+<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
+<!--    <script>-->
+<!--        function copyToClipboard() {-->
+<!--            var copyText = document.getElementById("payment-details").innerText;-->
+<!--            var textArea = document.createElement("textarea");-->
+<!--            textArea.value = copyText;-->
+<!--            document.body.appendChild(textArea);-->
+<!--            textArea.select();-->
+<!--            document.execCommand("copy");-->
+<!--            document.body.removeChild(textArea);-->
+<!--            alert("Copied to clipboard: " + copyText);-->
+<!--        }-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("{% static 'images/lee mino11.jpeg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100%;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">Payment</h1>
+        <strong>Note:</strong>
+        <p> A payment of <strong>5000 USD</strong> is to be made. <br> This payment typically covers for:
+            <ul>
+                <li>Security</li>
+                <li>Venue Arrangement</li>
+                <li>Photo Opportunity</li>
+                <li>Logistics</li>
+            </ul>
+        </p>
+        <form method="post" id="payment-form" class="needs-validation" novalidate>
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="alert alert-danger">
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <div class="form-group">
+                {{ form.payment_method.label_tag }}
+                {{ form.payment_method }}
+            </div>
+            <div id="paypal-details" style="display: none;">
+                <p>Please send the payment to the following PayPal email:</p>
+                <p><strong id="paypal-email">your_paypal_email@example.com</strong></p>
+                <button type="button" class="btn btn-secondary" onclick="copyToClipboard('paypal-email')">Copy Email</button>
+            </div>
+            <div id="bitcoin-details" style="display: none;">
+                <p>Please send the payment to the following Bitcoin address:</p>
+                <p><strong id="bitcoin-address">bc1qektaprxrj08tmr4yu2t9vgnhc20zux03pj8t4e</strong></p>
+                <button type="button" class="btn btn-secondary" onclick="copyToClipboard('bitcoin-address')">Copy Address</button>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('input[name="payment_method"]').change(function() {
+                if ($(this).val() == 'paypal') {
+                    $('#paypal-details').show();
+                    $('#bitcoin-details').hide();
+                } else if ($(this).val() == 'bitcoin') {
+                    $('#paypal-details').hide();
+                    $('#bitcoin-details').show();
+                }
+            });
+            $('input[name="payment_method"]:checked').trigger('change');
+        });
+
+        function copyToClipboard(elementId) {
+            var copyText = document.getElementById(elementId).innerText;
+            var textArea = document.createElement("textarea");
+            textArea.value = copyText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+            alert("Copied to clipboard: " + copyText);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+<!--    <title>Payment</title>-->
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">-->
+<!--</head>-->
+<!--<body>-->
+<!--    <div class="container mt-5">-->
+<!--        <h1 class="mb-4">Payment</h1>-->
+<!--        <form method="post" id="payment-form" class="needs-validation" novalidate>-->
+<!--            {% csrf_token %}-->
+<!--            {% if form.errors %}-->
+<!--                <div class="alert alert-danger">-->
+<!--                    <ul>-->
+<!--                        {% for field in form %}-->
+<!--                            {% for error in field.errors %}-->
+<!--                                <li>{{ error }}</li>-->
+<!--                            {% endfor %}-->
+<!--                        {% endfor %}-->
+<!--                        {% for error in form.non_field_errors %}-->
+<!--                            <li>{{ error }}</li>-->
+<!--                        {% endfor %}-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            {% endif %}-->
+<!--            <div class="form-group">-->
+<!--                {{ form.payment_method.label_tag }}-->
+<!--                {{ form.payment_method }}-->
+<!--            </div>-->
+<!--            <div id="paypal-details" style="display: none;">-->
+<!--                <div class="form-group">-->
+<!--                    {{ form.paypal_email.label_tag }}-->
+<!--                    {{ form.paypal_email }}-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div id="bitcoin-details" style="display: none;">-->
+<!--                <p>Please send the payment to the following Bitcoin address: bc1qgrsvda2g09tkp82pz2ymvjmw0ls3semsek6s3d</p>-->
+<!--                <p><strong>{{ bitcoin_address }}</strong></p>-->
+<!--            </div>-->
+<!--            <button type="submit" class="btn btn-primary">Submit</button>-->
+<!--        </form>-->
+<!--    </div>-->
+
+<!--    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>-->
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>-->
+<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>-->
+<!--    <script>-->
+<!--        $(document).ready(function() {-->
+<!--            $('input[name="payment_method"]').change(function() {-->
+<!--                if ($(this).val() == 'paypal') {-->
+<!--                    $('#paypal-details').show();-->
+<!--                    $('#bitcoin-details').hide();-->
+<!--                } else if ($(this).val() == 'bitcoin') {-->
+<!--                    $('#paypal-details').hide();-->
+<!--                    $('#bitcoin-details').show();-->
+<!--                }-->
+<!--            });-->
+<!--            $('input[name="payment_method"]:checked').trigger('change');-->
+<!--        });-->
+<!--    </script>-->
+<!--</body>-->
+<!--</html>-->

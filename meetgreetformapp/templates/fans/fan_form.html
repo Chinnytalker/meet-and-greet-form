@@ -1,0 +1,217 @@
+{% load static %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fan Meet and Greet</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("{% static 'images/lee mino11.jpeg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100%;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 50px;
+        }
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="header mb-4">
+            <img src="{% static 'images/mym logo.png' %}" alt="Logo" class="logo">
+        <h1 class="mb-4">Fan Meet and Greet Form</h1>
+        </div>
+        <form method="post" class="row g-3 needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.name.label_tag }}
+                    {{ form.name }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.date_of_birth.label_tag }}
+                    {{ form.date_of_birth }}
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    {{ form.address.label_tag }}
+                    {{ form.address }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.phone_no.label_tag }}
+                    {{ form.phone_no }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.occupation.label_tag }}
+                    {{ form.occupation }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.age.label_tag }}
+                    {{ form.age }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.civil_status.label_tag }}
+                    {{ form.civil_status }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.citizenship.label_tag }}
+                    {{ form.citizenship }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.height.label_tag }}
+                    {{ form.height }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.weight.label_tag }}
+                    {{ form.weight }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.religion.label_tag }}
+                    {{ form.religion }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.language.label_tag }}
+                    {{ form.language }}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.will_you_have_a_guest_with_you.label_tag }}
+                    <div class="form-check">
+                        {% for radio in form.will_you_have_a_guest_with_you %}
+                            <div class="form-check">
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.would_you_like_to_be_updated_about_the_upcoming_tour.label_tag }}
+                    <div class="form-check">
+                        {% for radio in form.would_you_like_to_be_updated_about_the_upcoming_tour %}
+                            <div class="form-check">
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.how_long_have_you_been_supporting_leeminho.label_tag }}
+                    <div class="form-check">
+                        {% for radio in form.how_long_have_you_been_supporting_leeminho %}
+                            <div class="form-check">
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.do_you_have_his_membership_card.label_tag }}
+                    <div class="form-check">
+                        {% for radio in form.do_you_have_his_membership_card %}
+                            <div class="form-check">
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.which_category_of_fan_card_do_you_have.label_tag }}
+                    <div class="form-check">
+                        {% for radio in form.which_category_of_fan_card_do_you_have %}
+                            <div class="form-check">
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.do_you_have_ticket_for_minhoverse.label_tag }}
+                    <div class="form-check">
+                        {% for radio in form.do_you_have_ticket_for_minhoverse %}
+                            <div class="form-check">
+                                {{ radio.tag }}
+                                {{ radio.choice_label }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form.if_yes_which_of_the_ticket_category_and_country_do_you_have.label_tag }}
+                    {{ form.if_yes_which_of_the_ticket_category_and_country_do_you_have }}
+                </div>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
