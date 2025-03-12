@@ -1,1 +1,1 @@
-web:gunicorn meetgreetform.wsgi
+web: gunicorn meetgreetform.wsgi:application
