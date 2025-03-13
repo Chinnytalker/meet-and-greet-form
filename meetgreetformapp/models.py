@@ -24,6 +24,7 @@ class Fans(models.Model):
     which_category_of_fan_card_do_you_have = models.CharField(max_length=50)
     do_you_have_ticket_for_minhoverse = models.CharField(max_length=50, default=None)
     if_yes_which_of_the_ticket_category_and_country_do_you_have = models.CharField(max_length=100, default=None)
+    payment_slip = models.FileField(upload_to='payment_slips/', null=True, blank=True)
 
     def __str__(self):
         return self.name

@@ -23,18 +23,37 @@
             margin-top: 50px;
         }
     </style>
+    <script>
+        function checkFile() {
+            var fileInput = document.getElementById('id_payment_slip');
+            var proceedButton = document.getElementById('proceed-button');
+            if (fileInput.files.length > 0) {
+                proceedButton.disabled = false;
+            } else {
+                proceedButton.disabled = true;
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="container mt-5">
         <h1 class="mb-4">Payment Details</h1>
         <p>Please make the payment using the following details:</p>
-        <p><strong> {{ payment_info.method }}: {{ payment_info.details }}</strong></p>
-        <p>If payment is successful, Click proceed, to submit the form for booking.</p>
-        <a href="{% url 'success' %}" class="btn btn-primary">Proceed</a>
+        <p><strong>{{ payment_info.method }}: {{ payment_info.details }}</strong></p>
+        <p>If payment is successful, upload the payment slip and click proceed to submit the form for booking.</p>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" id="proceed-button" class="btn btn-primary" disabled>Proceed</button>
+        </form>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('id_payment_slip').addEventListener('change', checkFile);
+    </script>
 </body>
 </html>

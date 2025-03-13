@@ -94,5 +94,8 @@ class PaymentForm(forms.Form):
     )
 
 
-
+class PaymentSlipForm(forms.ModelForm):
+    class Meta:
+        model = Fans
+        fields = ['payment_slip']
 

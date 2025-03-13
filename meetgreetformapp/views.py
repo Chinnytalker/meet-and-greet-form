@@ -1,17 +1,9 @@
-from django.shortcuts import render, redirect
-from .forms import FanForm, PaymentForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .forms import FanForm, PaymentForm, PaymentSlipForm
 from django.conf import settings
-from btcpay import BTCPayClient
+from django.core.mail import send_mail
+from .models import Fans
 import requests
-
-
-
-
-
-
-
-
-
 
 def fan_meet_and_greet(request):
     if request.method == 'POST':
@@ -26,18 +18,18 @@ def fan_meet_and_greet(request):
         form = FanForm()
     return render(request, 'fans/fan_form.html', {'form': form})
 
-
-
-
-
-
 def payment(request):
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
             payment_data = form.cleaned_data
-            request.session['payment_data'] = payment_data
-            return redirect('payment_details')
+            # Assuming you have a way to get the fan_id, for example from the session
+            fan_data = request.session.get('fan_data')
+            if fan_data:
+                fan = Fans.objects.create(**fan_data)
+                payment_data['fan_id'] = fan.id
+                request.session['payment_data'] = payment_data
+                return redirect('payment_details')
     else:
         form = PaymentForm()
     return render(request, 'fans/payment.html', {'form': form})
@@ -46,6 +38,24 @@ def payment_details(request):
     payment_data = request.session.get('payment_data')
     if not payment_data:
         return redirect('payment')
+
+    fan = get_object_or_404(Fans, pk=payment_data['fan_id'])
+
+    if request.method == "POST":
+        form = PaymentSlipForm(request.POST, request.FILES, instance=fan)
+        if form.is_valid():
+            form.save()
+            # Send email
+            send_mail(
+                'Payment Received',
+                f'User {fan.name} has made a payment. Details:\n\nName: {fan.name}\nEmail: {fan.email}\nPhone: {fan.phone_no}',
+                'your_email@example.com',
+                ['your_email@example.com'],
+                fail_silently=False,
+            )
+            return redirect('success')
+    else:
+        form = PaymentSlipForm(instance=fan)
 
     if payment_data['payment_method'] == 'paypal':
         payment_info = {
@@ -58,15 +68,17 @@ def payment_details(request):
             'details': settings.BITCOIN_ADDRESS
         }
 
-    return render(request, 'fans/payment_details.html', {'payment_info': payment_info})
+    context = {
+        'payment_info': payment_info,
+        'form': form,
+        'fan': fan,
+    }
+    return render(request, 'fans/payment_details.html', context)
 
 def success(request):
     fan_data = request.session.get('fan_data')
     payment_data = request.session.get('payment_data')
     return render(request, 'fans/success.html', {'fan_data': fan_data, 'payment_data': payment_data})
-
-
-
 
 
 
