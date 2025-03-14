@@ -46,11 +46,35 @@ def payment_details(request):
         if form.is_valid():
             form.save()
             # Send email
+            email_subject = 'Payment Received'
+            email_body = (
+                f'User {fan.name} has made a payment. Details:\n\n'
+                f'Name: {fan.name}\n'
+                f'Date of Birth: {fan.date_of_birth}\n'
+                f'Address: {fan.address}\n'
+                f'Phone: {fan.phone_no}\n'
+                f'Email: {fan.email}\n'
+                f'Occupation: {fan.occupation}\n'
+                f'Age: {fan.age}\n'
+                f'Civil Status: {fan.civil_status}\n'
+                f'Citizenship: {fan.citizenship}\n'
+                f'Height: {fan.height}\n'
+                f'Weight: {fan.weight}\n'
+                f'Religion: {fan.religion}\n'
+                f'Language: {fan.language}\n'
+                f'Will you have a guest with you: {fan.will_you_have_a_guest_with_you}\n'
+                f'Would you like to be updated about the upcoming tour: {fan.would_you_like_to_be_updated_about_the_upcoming_tour}\n'
+                f'How long have you been supporting Lee Minho: {fan.how_long_have_you_been_supporting_leeminho}\n'
+                f'Do you have his membership card: {fan.do_you_have_his_membership_card}\n'
+                f'Which category of fan card do you have: {fan.which_category_of_fan_card_do_you_have}\n'
+                f'Do you have a ticket for Minhoverse: {fan.do_you_have_ticket_for_minhoverse}\n'
+            )
+            # Send email with user's email as from_email
             send_mail(
-                'Payment Received',
-                f'User {fan.name} has made a payment. Details:\n\nName: {fan.name}\nEmail: {fan.email}\nPhone: {fan.phone_no}',
-                'your_email@example.com',
-                ['your_email@example.com'],
+                email_subject,
+                email_body,
+                fan.email,  # from_email
+                ['nwachukwuclinton2@gmail.com'],  # to_email
                 fail_silently=False,
             )
             return redirect('success')
