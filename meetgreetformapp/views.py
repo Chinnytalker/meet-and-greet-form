@@ -3,6 +3,7 @@ from .forms import FanForm, PaymentForm, PaymentSlipForm
 from django.conf import settings
 from django.core.mail import EmailMessage
 from .models import Fans
+import mimetypes
 import requests
 
 def fan_meet_and_greet(request):
@@ -80,7 +81,8 @@ def payment_details(request):
 
             # Attach the payment slip
             if fan.payment_slip:
-                email.attach(fan.payment_slip.name, fan.payment_slip.read(), fan.payment_slip.content_type)
+                mime_type, _ = mimetypes.guess_type(fan.payment_slip.path)
+                email.attach(fan.payment_slip.name, fan.payment_slip.read(), mime_type)
 
             # Send email
             email.send(fail_silently=False)
