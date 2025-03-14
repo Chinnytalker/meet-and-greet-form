@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import FanForm, PaymentForm, PaymentSlipForm
 from django.conf import settings
-from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from .models import Fans
 import requests
 
@@ -45,7 +45,7 @@ def payment_details(request):
         form = PaymentSlipForm(request.POST, request.FILES, instance=fan)
         if form.is_valid():
             form.save()
-            # Send email
+            # Prepare email content with all user's details
             email_subject = 'Payment Received'
             email_body = (
                 f'User {fan.name} has made a payment. Details:\n\n'
@@ -69,14 +69,21 @@ def payment_details(request):
                 f'Which category of fan card do you have: {fan.which_category_of_fan_card_do_you_have}\n'
                 f'Do you have a ticket for Minhoverse: {fan.do_you_have_ticket_for_minhoverse}\n'
             )
-            # Send email with user's email as from_email
-            send_mail(
+
+            # Create email message
+            email = EmailMessage(
                 email_subject,
                 email_body,
                 fan.email,  # from_email
                 ['nwachukwuclinton2@gmail.com'],  # to_email
-                fail_silently=False,
             )
+
+            # Attach the payment slip
+            if fan.payment_slip:
+                email.attach(fan.payment_slip.name, fan.payment_slip.read(), fan.payment_slip.content_type)
+
+            # Send email
+            email.send(fail_silently=False)
             return redirect('success')
     else:
         form = PaymentSlipForm(instance=fan)
